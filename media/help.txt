@@ -1,0 +1,51 @@
+<form id="{{question.id}}" method="POST" role="form">{% csrf_token %}
+				<div class="ui info floating message">
+					<div class="ui fluid left icon input">
+						<i class="ui comment icon"></i>
+						<input type="hidden" name="question" value="{{ album }}">
+						<input id="chat-msg{{question.id}}" name="chat-msg" type="text" name="comment" placeholder="Add Comment">
+						<button type="submit" onclick="comment_form('{{question.id}}');" name="add_comment" value="add_comment" class="ui blue button" class="scroll" id="{{question.id}}" style="margin-left:15px;">Comment</button>
+					</div>
+				</div>
+			</form>
+
+			<!-- Comments Header -->
+			<div class="hidden" id="main_comments{{question.id}}" style="display: none;">
+
+				<div style="font-size: 20px; color: #6698FF;" class="header">
+						Comments
+						<i class="ui right labeled icon caret right"></i>
+						<br>		
+				</div>
+
+				<!-- Scrollable Comments Section -->
+				<div class="hidden">
+					<div id="1" class="ui message" style="overflow-x: hidden; overflow-y: auto; height: 300px;">
+					
+						{% for comment in question.comments_set.all|dictsortreversed:"commented_at" %}						
+							<br>
+							<div id="12{{comment.id}}"></div>
+
+							<div style="display: inline;" id="comment-text{{question.id}}">
+								<a href=""><img class="ui avatar image" src="{% static 'globals/img/zlatan.jpg' %}"></a>
+							</div>
+
+							<span style="font-size: 15px; padding-left: 5px;">{{ comment.comment_text }}</span>	
+
+							<!-- Comment_Like Button Section starts here -->
+							<div style="display: inline;" id="like-section-comment{{comment.id}}">
+								<div id="like_button_div">
+									<br>
+									{% include 'feeds/like_section_comment.html' %}	
+									<div class="ui divider"></div>
+								</div>		
+							</div>
+							<!-- Comment Like Button section ends here -->
+									
+							
+						{% empty %}
+	    					<p>No comments here yet :(</p>
+						{% endfor %}
+					</div>
+				</div>
+			</div>
